@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureFundManagement - Soutenance de Projet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <!-- Code Highlight Theme: Atom One Dark -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark-reasonable.min.css">
+    <!-- Fonts: Outfit (Modern Headings) & Inter (Clean Body) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Premium Dark Palette */
+            --bg-dark: #0f172a;
+            /* Slate 900 */
+            --bg-card: rgba(30, 41, 59, 0.7);
+            /* Slate 800 + Glass */
+            --primary: #38bdf8;
+            /* Sky 400 */
+            --secondary: #818cf8;
+            /* Indigo 400 */
+            --accent: #2dd4bf;
+            /* Teal 400 (Security) */
+            --text-main: #f8fafc;
+            /* Slate 50 */
+            --text-muted: #94a3b8;
+            /* Slate 400 */
+            --gradient-main: linear-gradient(135deg, #38bdf8, #818cf8);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+        }
+
+        /* Abstract Background */
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.15) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        /* Grid Pattern Overlay */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            z-index: -1;
+        }
+
+        /* Typography */
+        .reveal h1,
+        .reveal h2,
+        .reveal h3,
+        .reveal h4 {
+            font-family: 'Outfit', sans-serif;
+            text-transform: none;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+        }
+
+        .reveal h1 {
+            font-weight: 800;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5em;
+        }
+
+        .reveal h2 {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            border-bottom: 3px solid rgba(56, 189, 248, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .reveal p,
+        .reveal li {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            font-weight: 400;
+        }
+
+        .reveal strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        /* Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: stretch;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Elements */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            margin-right: 10px;
+        }
+
+        .badge.secondary {
+            background: rgba(129, 140, 248, 0.1);
+            color: var(--secondary);
+            border-color: rgba(129, 140, 248, 0.2);
+        }
+
+        .stat-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Code Blocks - Mac Style */
+        .code-window {
+            background: #1e293b;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .window-header {
+            background: #0f172a;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 6px;
+            margin-right: 16px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background: #ef4444;
+        }
+
+        .dot-yellow {
+            background: #eab308;
+        }
+
+        .dot-green {
+            background: #22c55e;
+        }
+
+        .window-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            opacity: 0.8;
+        }
+
+        .reveal pre {
+            margin: 0;
+            box-shadow: none;
+            width: 100%;
+        }
+
+        .reveal code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+            padding: 1.5rem;
+            max-height: 400px;
+            tab-size: 2;
+        }
+
+        /* Lists */
+        .feature-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+            list-style: none;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Icons */
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Accueil -->
+            <section data-transition="fade" style="text-align: left;">
+                <div style="margin-bottom: 20px;">
+                    <span class="badge">🔐 Blockchain Security</span>
+                    <span class="badge secondary">⚡ DeFi Revolution</span>
+                </div>
+                <h1 style="font-size: 4rem; line-height: 1.1;">
+                    SECURE<br>FUND<br>MANAGEMENT
+                </h1>
+                <p style="font-size: 1.5rem; color: var(--text-muted); max-width: 600px; margin-top: 1rem;">
+                    Système de Trésorerie Décentralisée Next-Gen
+                </p>
+
+                <div style="margin-top: 2rem;">
+                    <p
+                        style="font-size: 0.9rem; color: var(--accent); margin-bottom: 0.5rem; text-transform:uppercase; letter-spacing:1px; font-weight:600;">
+                        Réalisé par</p>
+                    <h4 style="font-size: 1.3rem; margin: 0; font-weight: 500;">
+                        Tbini Mustapha Amin <span style="color:var(--secondary); margin:0 10px;">&</span> Ben Mohra
+                        Rayen
+                    </h4>
+                </div>
+
+                <div class="grid-3" style="margin-top: 3rem; max-width: 800px;">
+                    <div>
+                        <div class="stat-number">0.8+</div>
+                        <div class="stat-label">Solidity</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Sécurisé</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">-60%</div>
+                        <div class="stat-label">Gas Opt.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 2: Problématique -->
+            <section data-transition="slide">
+                <h2>⚠️ DÉFIS DU SECTEUR</h2>
+                <div class="grid-2">
+                    <div class="glass-card">
+                        <div class="icon-box">🏦</div>
+                        <h3>CENTRALISATION</h3>
+                        <p style="font-size: 1rem; color: var(--text-muted);">
+                            Les fonds des utilisateurs sont gérés par des intermédiaires, créant un point de défaillance
+                            unique. Opacité totale sur la gestion.
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="icon-box"
+                            style="color: #ef4444; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2);">
+                            ⚡</div>
+                        <h3>VULNÉRABILITÉS</h3>
+                        <p style="font-size: 1rem; color: var(--text-muted);">
+                            Les smart contracts vulnérables coûtent des millions (DAO hacks). Failles critiques :
+                        </p>
+                        <ul class="feature-list" style="font-size: 0.9rem; margin-top: 10px;">
+                            <li>Attaques par Réentrance</li>
+                            <li>Défauts de Contrôle d'Accès</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Solution -->
+            <section data-transition="slide">
+                <h2>💎 NOTRE SOLUTION</h2>
+                <div class="grid-3" style="margin-bottom: 2rem;">
+                    <div class="glass-card" style="text-align: center; padding: 1.5rem;">
+                        <h4 style="color: var(--accent); margin-bottom: 0.5rem;">TRUSTLESS</h4>
+                        <p style="font-size: 0.9rem;">Zero Trust Arch.</p>
+                    </div>
+                    <div class="glass-card" style="text-align: center; padding: 1.5rem;">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">IMMUTABLE</h4>
+                        <p style="font-size: 0.9rem;">Code Vérifiable</p>
+                    </div>
+                    <div class="glass-card" style="text-align: center; padding: 1.5rem;">
+                        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">SECURE</h4>
+                        <p style="font-size: 0.9rem;">Multi-Layer</p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="grid-2">
+                        <ul class="feature-list">
+                            <li><strong>Architecture :</strong> Solidity 0.8+ (SafeMath natif)</li>
+                            <li><strong>Optimisation :</strong> Custom Errors (Gas saver)</li>
+                        </ul>
+                        <ul class="feature-list">
+                            <li><strong>Sécurité :</strong> Patterns CEI & Access Control</li>
+                            <li><strong>Fiabilité :</strong> Audit Ready & Open Source</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Fonctionnalités -->
+            <section data-transition="slide">
+                <h2>🚀 FONCTIONNALITÉS</h2>
+                <div class="grid-2" style="gap: 1.5rem;">
+                    <div class="glass-card" style="padding: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; display:flex; align-items:center; gap:10px;"><span
+                                style="color:var(--accent)">💰</span> DÉPÔTS SÉCURISÉS</h4>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">Acceptation de fonds avec validation automatique
+                            & événements.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; display:flex; align-items:center; gap:10px;"><span
+                                style="color:var(--primary)">🔐</span> RETRAITS PROTÉGÉS</h4>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">Réservés au propriétaire avec pattern
+                            anti-réentrance.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; display:flex; align-items:center; gap:10px;"><span
+                                style="color:var(--secondary)">👤</span> OWNERSHIP TRANSFER</h4>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">Mécanisme de handover sécurisé avec validation.
+                        </p>
+                    </div>
+                    <div class="glass-card" style="padding: 1.5rem;">
+                        <h4 style="font-size: 1.2rem; display:flex; align-items:center; gap:10px;"><span
+                                style="color:#fff">📊</span> TRANSPARENCE</h4>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">Lecture publique de l'état en temps réel.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5: Architecture Security -->
+            <section data-transition="slide">
+                <h2>🛡️ ARCHITECTURE SÉCURITÉ</h2>
+                <div class="grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: var(--accent);">MODIFICATEURS D'ACCÈS</h4>
+                        <p style="font-size: 1rem; margin-bottom: 1.5rem;">
+                            Le système utilise des <strong>modifiers</strong> pour encapsuler la logique de sécurité
+                            critique.
+                        </p>
+                        <div class="glass-card"
+                            style="background: rgba(45, 212, 191, 0.1); border-color: rgba(45, 212, 191, 0.3);">
+                            <p style="font-size: 0.9rem; color: var(--accent);">
+                                "Vérification systématique avant exécution."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="code-window">
+                        <div class="window-header">
+                            <span class="window-title">Modifier.sol</span>
+                        </div>
+                        <pre><code class="language-solidity">modifier onlyOwner() {
+    if (msg.sender != owner) {
+        // Gas efficient custom error
+        revert Unauthorized(msg.sender);
+    }
+    _; // Continue execution
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: Code Deposit (MISSING BEFORE) -->
+            <section data-transition="slide">
+                <h2>💎 CODE : DÉPÔTS</h2>
+                <div class="grid-2">
+                    <div>
+                        <h4 style="color: var(--primary);">Mécanisme</h4>
+                        <ul class="feature-list" style="font-size: 0.9rem;">
+                            <li><strong>Payable :</strong> Accepte l'Ether natif</li>
+                            <li><strong>validAmount :</strong> Rejette tx nulles</li>
+                            <li><strong>Event :</strong> Traçabilité on-chain</li>
+                            <li><strong>State :</strong> Mise à jour atomique</li>
+                        </ul>
+                    </div>
+                    <div class="code-window">
+                        <div class="window-header">
+                            <span class="window-title">SecureFundManagement.sol</span>
+                        </div>
+                        <pre><code class="language-solidity">function deposit() 
+    public payable 
+    validAmount(msg.value) 
+    returns (bool success) 
+{
+    // Update State (Effect)
+    balance += msg.value;
+    
+    // Log Event
+    emit Deposit(msg.sender, msg.value, balance);
+    
+    return true;
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Code Withdraw -->
+            <section data-transition="slide">
+                <h2>⚡ CODE : RETRAITS (CEI)</h2>
+                <p style="font-size: 0.9rem; margin-bottom: 1rem;">Implémentation du pattern Checks-Effects-Interactions
+                    pour prévenir la réentrance.</p>
+
+                <div class="code-window">
+                    <div class="window-header">
+                        <span class="window-title">SecureFundManagement.sol</span>
+                    </div>
+                    <pre><code class="language-solidity" data-line-numbers="2-5,8-9,12-14">function withdraw(uint256 amount) public onlyOwner {
+    // 1. CHECKS (Vérifications)
+    if (amount > balance) {
+        revert InsufficientFunds(amount, balance);
+    }
+
+    // 2. EFFECTS (Mise à jour état AVANT transfert)
+    balance -= amount; 
+    
+    // 3. INTERACTIONS (Appel externe)
+    (bool sent, ) = payable(owner).call{value: amount}("");
+    require(sent, "Transfer failed");
+    
+    emit Withdrawal(owner, amount, balance);
+}</code></pre>
+                </div>
+                <div style="margin-top: 1rem; display: flex; gap: 20px; justify-content: center;">
+                    <div class="badge">1. Check</div>
+                    <div class="badge">2. Effect</div>
+                    <div class="badge secondary">3. Interaction</div>
+                </div>
+            </section>
+
+            <!-- Slide 8: Gas Optimization -->
+            <section data-transition="slide">
+                <h2>📉 OPTIMISATION GAS</h2>
+                <div class="grid-2">
+                    <div class="glass-card"
+                        style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                        <h3 style="font-size: 5rem; color: var(--accent); margin:0;">-60%</h3>
+                        <p style="margin-top:0;">Réduction des coûts de Gas</p>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">Grace aux Custom Errors (Solidity
+                            0.8.4+)</p>
+                    </div>
+                    <div class="code-window">
+                        <div class="window-header">
+                            <span class="window-title">Errors.sol</span>
+                        </div>
+                        <pre><code class="language-solidity">// More expensive: require("String...")
+// Cheaper: Custom Errors
+
+error Unauthorized(address caller);
+error InsufficientFunds(uint req, uint avail);
+error ZeroAmount();
+error ZeroAddress();</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9: Conclusion -->
+            <section data-transition="zoom" style="text-align: center;">
+                <h1 style="font-size: 3rem;">L'AVENIR DE LA FINANCE</h1>
+                <p style="max-width: 700px; margin: 0 auto 2rem; color: var(--text-muted);">
+                    SecureFundManagement pose les fondations d'une infrastructure DeFi <strong
+                        style="color:var(--primary)">robuste</strong>, <strong
+                        style="color:var(--accent)">transparente</strong> et <strong
+                        style="color:var(--secondary)">démocratique</strong>.
+                </p>
+
+                <div style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 3rem;">
+                    <div class="glass-card" style="padding: 1rem 2rem; cursor: pointer;">📖 DOCUMENTATION</div>
+                    <div class="glass-card" style="padding: 1rem 2rem; cursor: pointer; border-color: var(--primary);">�
+                        CODE SOURCE</div>
+                </div>
+
+                <div class="grid-3" style="max-width: 800px; margin: 0 auto;">
+                    <div class="badge">✅ Audit Ready</div>
+                    <div class="badge secondary">🔓 Open Source </div>
+                    <div class="badge">⚡ Optimisé</div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            plugins: [RevealHighlight],
+            slideNumber: 'c/t'
+        });
+    </script>
+</body>
+
+</html>
